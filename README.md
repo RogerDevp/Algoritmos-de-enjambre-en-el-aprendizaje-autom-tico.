@@ -1,8 +1,59 @@
 # Algoritmos-de-enjambre-en-el-aprendizaje-autom-tico.
-
-
-
 # Actividad 03 – Algoritmos de Enjambre
+
+## Parte 1: Selección de Características con algoritmo ABC 
+
+Se implementa el **Algoritmo de Colonia de Abejas Artificiales (ABC)** aplicado a la selección de características sobre el dataset *Student Performance Factors*. El objetivo principal es optimizar la precisión de clasificación de un modelo `MLPClassifier` al mismo tiempo que se reduce la dimensionalidad de las variables de entrada.
+
+### Flujo de Trabajo y Arquitectura del Algoritmo
+
+### 1. Representación del Problema
+* **Vector de Solución:** Cada solución se representa mediante una cadena binaria de 19 posiciones (correspondiente a las 19 variables predictoras).
+  * `1`: La característica es seleccionada.
+  * `0`: La característica es descartada.
+* **Función Clave:** `generar_solucion()` crea cadenas aleatorias asegurando que al menos una característica sea seleccionada.
+
+### 2. Función de Fitness (Evaluación)
+Las soluciones se evalúan entrenando un `MLPClassifier` únicamente con las características seleccionadas (`1`s). La función de **Fitness** penaliza la cantidad de variables seleccionadas para promover modelos parsimoniosos:
+
+$$\text{Fitness} = \text{Accuracy} - \left(\lambda \times \frac{\text{Características Seleccionadas}}{\text{Total Características}}\right)$$
+
+* **Función Clave:** `evaluar_solucion()` calcula el *accuracy*, el número de variables y el *fitness* final.
+
+### Fases del Algoritmo ABC
+
+1. **Abejas Empleadas (Obreras):**
+   * Cada abeja explora la vecindad comparando su solución actual con otra aleatoria mediante la función `generar_candidata()`.
+   * Modifica posiciones donde difieren ambas cadenas.
+   * Acepta la nueva candidata **únicamente si su Fitness es superior** a la solución actual.
+
+2. **Abejas Observadoras:**
+   * Evalúan la calidad de las soluciones existentes y seleccionan cuál explorar utilizando una distribución de probabilidad basada en el *Fitness* (`np.random.choice`).
+   * Generan candidatas locales y aplican selección codiciosa (greedy selection).
+
+3. **Abejas Exploradoras (Scouts):**
+   * Se lleva un control de intentos fallidos sin mejora (`contadores_sin_mejora`).
+   * Si una solución no presenta mejoras tras superar el umbral fijado (`LIMIT = 5`), la solución se abandona.
+   * La abeja scout re-inicializa una nueva solución totalmente aleatoria mediante `generar_solucion()` para evitar máximos locales.
+
+Parámetros Principales
+
+| Parámetro        | Valor  | Descripción                                                          |
+| :--------------- | :----- | :------------------------------------------------------------------- |
+| `NUM_BEES`       | `10`   | Número de abejas en la colonia.                                      |
+| `MAX_ITERATIONS` | `20`   | Iteraciones máximas de búsqueda.                                     |
+| `LIMIT`          | `5`    | Límite de intentos sin mejora antes de activar la abeja exploradora. |
+| `\lambda`        | `0.10` | Factor de penalización por número de características utilizadas.     |
+
+## Tecnologías y Librerías Utilizadas
+
+* **Lenguaje:** Python
+* **Librerías Principales:** `numpy`, `scikit-learn` (`MLPClassifier`)
+
+
+---
+
+
 
 ## Parte: Entrenamiento de Red Neuronal sin Backpropagation y Clustering
 
