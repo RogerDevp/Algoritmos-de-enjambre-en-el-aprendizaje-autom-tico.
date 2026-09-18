@@ -203,13 +203,16 @@ Se incluye comparación gráfica directa con K-Means estándar y visualización 
 
 ## 6. Instrucciones de Instalación y Ejecución
 
-### 1. Activar el Entorno Virtual e Instalar Requerimientos
+### 1. Crear, Activar el Entorno Virtual e Instalar Requerimientos
 
 ```bash
-# Activar el entorno virtual
+# 1. Crear el entorno virtual
+python3 -m venv .venv
+
+# 2. Activar el entorno virtual
 source .venv/bin/activate
 
-# Instalar dependencias requeridas
+# 3. Instalar dependencias requeridas
 pip install -r requirements.txt
 ```
 
@@ -231,4 +234,5 @@ python aco_clustering.py
 # 5. Clustering con PSO (Partículas)
 python pso_clustering.py
 ```
+
 
