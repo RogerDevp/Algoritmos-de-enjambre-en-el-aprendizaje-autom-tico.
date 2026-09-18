@@ -44,8 +44,8 @@ X_train, X_test, Y_train, Y_test, y_train, y_test = train_test_split(
 # 2. ARQUITECTURA DE LA RED (3 capas: entrada, oculta, salida)
 # ---------------------------------------------------------------------
 N_IN = X.shape[1]      # 4 características
-N_HID = 8               # neuronas en la capa oculta
-N_OUT = Y.shape[1]      # 3 clases
+N_HID = 8              # neuronas en la capa oculta
+N_OUT = Y.shape[1]     # 3 clases
 
 # Número total de parámetros (pesos + bias) que debe codificar cada partícula
 N_PARAMS = (N_IN * N_HID + N_HID) + (N_HID * N_OUT + N_OUT)
@@ -107,21 +107,21 @@ def pso_train(n_particles=40, n_iter=150, w=0.72, c1=1.5, c2=1.5,
     """
     Ciclo completo de PSO aplicado al entrenamiento de la red:
 
-      1) Representación de la partícula: cada partícula es un vector
-         theta en R^N_PARAMS con todos los pesos y bias de la red.
-      2) Inicialización del enjambre: posiciones y velocidades
-         aleatorias para cada partícula.
-      3) Función de aptitud: entropía cruzada de la red sobre el
-         set de entrenamiento (fitness()).
-      4) Comportamiento de la partícula: en cada iteración, la
-         partícula ajusta su velocidad combinando inercia (w), su
-         mejor posición personal (pbest) y la mejor posición global
-         del enjambre (gbest).
-      5) Evolución: el enjambre repite el paso 4 iterativamente,
-         y pbest/gbest se actualizan cuando se halla una mejor
-         solución (menor pérdida).
-      6) Finalización: se detiene al llegar a n_iter iteraciones
-         (criterio de parada por número máximo de épocas).
+     1) Representación de la partícula: cada partícula es un vector
+        theta en R^N_PARAMS con todos los pesos y bias de la red.
+     2) Inicialización del enjambre: posiciones y velocidades
+        aleatorias para cada partícula.
+     3) Función de aptitud: entropía cruzada de la red sobre el
+        set de entrenamiento (fitness()).
+     4) Comportamiento de la partícula: en cada iteración, la
+        partícula ajusta su velocidad combinando inercia (w), su
+        mejor posición personal (pbest) y la mejor posición global
+        del enjambre (gbest).
+     5) Evolución: el enjambre repite el paso 4 iterativamente,
+        y pbest/gbest se actualizan cuando se halla una mejor
+        solución (menor pérdida).
+     6) Finalización: se detiene al llegar a n_iter iteraciones
+        (criterio de parada por número máximo de épocas).
     """
     rng = np.random.default_rng(seed)
 
@@ -143,8 +143,8 @@ def pso_train(n_particles=40, n_iter=150, w=0.72, c1=1.5, c2=1.5,
         r1 = rng.random((n_particles, N_PARAMS))
         r2 = rng.random((n_particles, N_PARAMS))
 
-        cognitive = c1 * r1 * (pbest_pos - positions)   # atracción a su propio mejor
-        social = c2 * r2 * (gbest_pos - positions)       # atracción al mejor global
+        cognitive = c1 * r1 * (pbest_pos - positions)    # atracción a su propio mejor
+        social = c2 * r2 * (gbest_pos - positions)        # atracción al mejor global
         velocities = w * velocities + cognitive + social
         velocities = np.clip(velocities, -v_max, v_max)
 
@@ -166,9 +166,9 @@ def pso_train(n_particles=40, n_iter=150, w=0.72, c1=1.5, c2=1.5,
 
         history.append(gbest_val)
 
-        if (it + 1) % 25 == 0:
-            print(f"Iteración {it + 1:3d}/{n_iter} - "
-                  f"mejor pérdida (gbest): {gbest_val:.4f}")
+        # Muestra el avance en TODAS las iteraciones
+        print(f"Iteración {it + 1:3d}/{n_iter} - "
+              f"mejor pérdida (gbest): {gbest_val:.4f}")
 
     # --- (6) Finalización: n_iter alcanzado ---
     return gbest_pos, gbest_val, history
