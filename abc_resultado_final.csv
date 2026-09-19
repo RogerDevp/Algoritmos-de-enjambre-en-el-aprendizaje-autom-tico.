@@ -1,0 +1,3 @@
+modelo,accuracy,fitness,caracteristicas
+MLP Base,,,27
+MLP + ABC,0.8018154311649016,0.7929920459721784,14
